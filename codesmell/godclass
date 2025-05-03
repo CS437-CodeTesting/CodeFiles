@@ -1,0 +1,76 @@
+import java.util.*;
+
+public class ECommerceSystem {
+    private List<Product> products = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
+    private Map<String, String> userCredentials = new HashMap<>();
+
+    // Handles user registration and login
+    public void registerUser(String username, String password) {
+        userCredentials.put(username, password);
+    }
+
+    public boolean loginUser(String username, String password) {
+        return userCredentials.containsKey(username) && userCredentials.get(username).equals(password);
+    }
+
+    // Handles products
+    public void addProduct(String name, double price) {
+        products.add(new Product(name, price));
+    }
+
+    public List<Product> getAllProducts() {
+        return products;
+    }
+
+    // Handles orders
+    public void createOrder(String username, List<Product> cartItems) {
+        orders.add(new Order(username, cartItems));
+    }
+
+    public List<Order> getAllOrders() {
+        return orders;
+    }
+
+    // Generates reports
+    public void printSalesReport() {
+        double total = 0;
+        for (Order o : orders) {
+            total += o.getTotalPrice();
+        }
+        System.out.println("Total Sales: $" + total);
+    }
+
+    // Inner classes
+    class Product {
+        String name;
+        double price;
+
+        Product(String name, double price) {
+            this.name = name;
+            this.price = price;
+        }
+
+        double getPrice() {
+            return price;
+        }
+    }
+
+    class Order {
+        String username;
+        List<Product> items;
+
+        Order(String username, List<Product> items) {
+            this.username = username;
+            this.items = items;
+        }
+
+        double getTotalPrice() {
+            double sum = 0;
+            for (Product p : items) {
+                sum += p.getPrice();
+            }
+            return sum;
+        }
+    }
+}
