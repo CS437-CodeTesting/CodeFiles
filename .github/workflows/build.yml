@@ -20,10 +20,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Compile Java files
-        run: |
-          mkdir -p build
-          javac -d build $(find java -name "*.java")
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
@@ -32,4 +28,4 @@ jobs:
             -Dsonar.projectKey=CS437-CodeTesting_CodeFiles
             -Dsonar.organization=cs437-codetesting
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-            -Dsonar.java.binaries=build
+            -Dsonar.java.binaries=none
