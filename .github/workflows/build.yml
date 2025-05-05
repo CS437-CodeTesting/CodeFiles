@@ -1,4 +1,4 @@
-name: SonarCloud Scan
+name: SonarCloud Analysis
 
 on:
   push:
@@ -6,22 +6,30 @@ on:
       - main
 
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  analyze:
+    name: Analyze with SonarCloud
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
+
+      - name: Compile Java files
+        run: |
+          mkdir -p build
+          javac -d build $(find java -name "*.java")
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
         with:
-          projectBaseDir: .
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          args: >
+            -Dsonar.projectKey=CS437-CodeTesting_CodeFiles
+            -Dsonar.organization=cs437-codetesting
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.java.binaries=build
