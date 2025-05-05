@@ -20,6 +20,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Create empty binaries folder
+        run: mkdir -p empty-bin
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
@@ -28,4 +30,4 @@ jobs:
             -Dsonar.projectKey=CS437-CodeTesting_CodeFiles
             -Dsonar.organization=cs437-codetesting
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-            -Dsonar.java.binaries=none
+            -Dsonar.java.binaries=empty-bin
